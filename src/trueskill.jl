@@ -1,4 +1,20 @@
 # Based on code from PMTK. Translated by John Myles White
+# Demo of the TrueSkill model
+# PMTKauthor Carl Rasmussen and  Joaquin Quinonero-Candela,
+# PMTKurl http://mlg.eng.cam.ac.uk/teaching/4f13/1112
+# PMTKmodified Kevin Murphy
+
+immutable TrueSkill
+    Ms::Vector{Float64}
+    Ps::Vector{Float64}
+
+    function TrueSkill(m::Vector, p::Vector)
+        if length(m) != length(p)
+            error("Length of m and p must match")
+        end
+        new(m, p)
+    end
+end
 
 # This is terrible practice
 psi(x) = pdf(Normal(), x) ./ cdf(Normal(), x)
@@ -7,7 +23,7 @@ psi(x) = pdf(Normal(), x) ./ cdf(Normal(), x)
 lambda(x) = (pdf(Normal(), x) ./ cdf(Normal(), x)) .*
             ((pdf(Normal(), x) ./ cdf(Normal(), x)) + x)
 
-function fit_trueskill(M, G)
+function fit(::Type{TrueSkill}, M::Integer, G::Matrix)
     # Input:
     # M = number of players
     # G[i, 1] = id of winner for game i
@@ -24,8 +40,8 @@ function fit_trueskill(M, G)
     pv = 0.5
 
     # initialize matrices of skill marginals - means and variances
-    Ms = nans(M, 1) # 2 ?
-    Ps = nans(M, 1) # 2 ?
+    Ms = nans(M)
+    Ps = nans(M)
 
     # initialize matrices of game to skill messages - means and precisions
     Mgs = zeros(N, 2)
@@ -39,8 +55,9 @@ function fit_trueskill(M, G)
         # (1) compute marginal skills 
         for p = 1:M
             # compute this first because it is needed for the mean update
+            # In Matlab these produced vectors
             Ps[p] = 1 / pv + sum(Pgs[G .== p])
-            Ms[p] = sum(Pgs[G .== p] .* Mgs[G .== p]) ./ Ps[p]
+            Ms[p] = sum(Pgs[G .== p] .* Mgs[G .== p]) / Ps[p]
         end
 
         # (2) compute skill to game messages
@@ -66,5 +83,5 @@ function fit_trueskill(M, G)
         Mgs = [mtg -mtg] + Msg[:, [2, 1]]
     end
 
-    return Ms, Ps
+    return TrueSkill(Ms, Ps)
 end
