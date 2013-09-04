@@ -41,7 +41,7 @@ for i = 1:Nplayers
     Ngames[i] = sum(data[:, 1] .== i) + sum(data[:, 2] .== i)
 end
 
-m = fit(TrueSkill, Nplayers, data)
+m = fit(TrueSkill, data, Nplayers)
 Ms, Ps = m.Ms, m.Ps
 order = sortperm(vec(Ms), rev = true)
 

@@ -23,17 +23,21 @@ psi(x) = pdf(Normal(), x) ./ cdf(Normal(), x)
 lambda(x) = (pdf(Normal(), x) ./ cdf(Normal(), x)) .*
             ((pdf(Normal(), x) ./ cdf(Normal(), x)) + x)
 
-function fit(::Type{TrueSkill}, M::Integer, G::Matrix)
+function fit(::Type{TrueSkill}, D::Matrix, M::Integer)
     # Input:
-    # M = number of players
     # G[i, 1] = id of winner for game i
     # G[i, 2] = id of loser for hgame i
+    # M = number of players
     #
     # Output:
     # Ms[p] = mean of skill for player p
     # Ps[p] = precision of skill for player p
 
-    # number of games
+    # Need to translate into TrueSkill format temporarily
+    # number of games. This is bad hack for representing draws
+    # since it increases precision of estimates artificially.
+    G = translateDtoG(D)
+
     N = size(G, 1)
 
     # prior skill variance (prior mean is always 0)
