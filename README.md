@@ -48,3 +48,27 @@ As you can see, Player 1 gets the highest score, whereas Players 2 and 3 get low
     m3 = fit(TrueSkill, D, n_players)
 
 Here you can see that the order of scores now becomes Player 1, Player 3 and Player 2, which is just what we would expect.
+
+All of these examples assume that you a single group of players that compete against one another. This can be viewed as a unipartite graph.
+
+Another common task in ranking comes from educational testing, where you have students completing questions that they either answer correctly (1) or incorrectly. In this case, we work with a bipartite graph. From the data perspective, what matters is that the first and second columns of our data matrix maintain completely separate indices:
+
+	n_students = 2
+	n_questions = 5
+
+	D = [1 1 1.0;
+	     1 2 1.0;
+	     1 3 1.0;
+	     1 4 1.0;
+	     1 5 0.0;
+		 2 1 1.0;
+	     2 2 1.0;
+	     2 3 1.0;
+	     2 4 0.0;
+	     2 5 0.0;]
+
+Given this data, we can fit the Rasch model, which is like Bradley-Terry, but for bipartite data:
+
+	m = fit(Rasch, D, n_students, n_questions)
+
+This produces separate estimates for all students and all questions, but puts them on a common scale. In reality, we could do the same thing with the Bradley-Terry model if we extended the indices to grow from `1` to `n_students + n_questions`. The Rasch model is simply more convenient when we would like to employ the "natural" ID assignment in which students and questions have independent ID counters.
