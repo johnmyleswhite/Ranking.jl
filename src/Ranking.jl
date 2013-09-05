@@ -2,10 +2,12 @@ module Ranking
 	using Distributions
 	using Optim
 
+	export Elo, TrueSkill, BradleyTerry, Rasch
+	export predict, fit, update!
+
 	include("utils.jl")
 	include("elo.jl")
 	include("trueskill.jl")
 	include("btl.jl")
-	export Elo, TrueSkill, BradleyTerry
-	export predict, fit, update!
+	include("rasch.jl")
 end
