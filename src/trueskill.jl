@@ -44,16 +44,16 @@ function fit(::Type{TrueSkill}, D::Matrix, M::Integer)
     pv = 0.5
 
     # initialize matrices of skill marginals - means and variances
-    Ms = nans(M)
-    Ps = nans(M)
+    Ms = fill(NaN, M)
+    Ps = fill(NaN, M)
 
     # initialize matrices of game to skill messages - means and precisions
     Mgs = zeros(N, 2)
     Pgs = zeros(N, 2)
 
     # allocate matrices of skill to game messages - means and precisions
-    Msg = nans(N, 2)
-    Psg = nans(N, 2)
+    Msg = fill(NaN, N, 2)
+    Psg = fill(NaN, N, 2)
 
     for iter = 1:5
         # (1) compute marginal skills 
