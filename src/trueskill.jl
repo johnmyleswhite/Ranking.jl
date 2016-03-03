@@ -67,7 +67,7 @@ function fit(::Type{TrueSkill}, D::Matrix, M::Integer)
         # (2) compute skill to game messages
         # compute this first because it is needed for the mean update
         Psg = Ps[G] - Pgs
-        Msg = (Ps[G] .* Ms[G] - Pgs .* Mgs) ./ Psg[G]
+        Msg = (Ps[G] .* Ms[G] - Pgs .* Mgs) ./ Psg
 
         # (3) compute game to performance messages
         # player 1 always wins the way we store data
