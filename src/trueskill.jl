@@ -36,7 +36,7 @@ function fit(::Type{TrueSkill}, D::Matrix, M::Integer)
     # Need to translate into TrueSkill format temporarily
     # number of games. This is bad hack for representing draws
     # since it increases precision of estimates artificially.
-    G = translateDtoG(D)
+    G = round(Int, translateDtoG(D)) # cast type of G to Int
 
     N = size(G, 1)
 
