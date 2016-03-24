@@ -4,6 +4,8 @@ Ranking.jl
 Julia tools for ranking entities based on records of binary comparisons.
 Currently, we've implemented drafts of Elo, Bradley-Terry and TrueSkill.
 
+It is tested with Julia 0.4.
+
 # Usage Example
 
 All of the models we use expect a data matrix, `D`, in which each row
@@ -22,6 +24,7 @@ create data now in which Player 1 beat Player 2 and also beat Player 3, then Pla
 We can then fit Elo:
 
 ```julia
+    include("Ranking.jl")
 	using Ranking
 
 	m1 = fit(Elo, D, n_players)
@@ -48,6 +51,7 @@ As you can see, Player 1 gets the highest score, whereas Players 2 and 3 get low
 	     1 3 1.0;
 	     2 3 0.0;]
 
+    include("Ranking.jl")
 	using Ranking
 
 	m1 = fit(Elo, D, n_players)
