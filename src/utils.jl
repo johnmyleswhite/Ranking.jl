@@ -2,7 +2,7 @@ invlogit(z::Real) = 1 / (1 + exp(-clamp(z, -709, 709)))
 
 function translateDtoG(D::Matrix)
 	N = size(D, 1)
-    G = Array(Float64, 0, 2)
+    G = Array{Float64}(undef, 0, 2)
     for i in 1:N
     	if D[i, 3] == 0.0
     		G = vcat(G, [D[i, 2] D[i, 1]])
