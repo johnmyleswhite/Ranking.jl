@@ -24,7 +24,7 @@ function λ(x::Real)
     return ψx*(ψx+x)
 end
 
-function fit(D::Matrix, M::Integer)
+function fit(::Type{TrueSkill}, D::Matrix, M::Integer)
     # Input:
     # G[i, 1] = id of winner for game i
     # G[i, 2] = id of loser for game i
