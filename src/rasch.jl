@@ -13,7 +13,7 @@ function logposterior(m::Rasch, D::Matrix)
 
 	# Latent variable logit likelihood
 	for ind in 1:nrows
-		i, j, o = int(D[ind, 1]), int(D[ind, 2]), D[ind, 3]
+		i, j, o = round(Int, D[ind, 1]), round(Int, D[ind, 2]), D[ind, 3]
 		p = predict(m, i, j)
 		ll += log((1 - p) * (1 - o) + p * o)
 	end
