@@ -1,4 +1,4 @@
-immutable BradleyTerry
+struct BradleyTerry
 	r::Vector{Float64}
 	lambda::Float64
 end
@@ -11,7 +11,7 @@ function logposterior(m::BradleyTerry, D::Matrix)
 
 	# Latent variable logit likelihood
 	for ind in 1:nrows
-		i, j, o = int(D[ind, 1]), int(D[ind, 2]), D[ind, 3]
+		i, j, o = Int(D[ind, 1]), Int(D[ind, 2]), D[ind, 3]
 		p = predict(m, i, j)
 		ll += log((1 - p) * (1 - o) + p * o)
 	end
@@ -31,7 +31,7 @@ function fit(::Type{BradleyTerry},
 	         lambda::Real = 1.0)
 	f(r::Vector{Float64}) = logposterior(BradleyTerry(r, lambda), D)
 
-	res = optimize(f, zeros(n), method = :l_bfgs)
+	res = optimize(f, zeros(n), LBFGS())
 
-	return BradleyTerry(res.minimum, lambda)
+	return BradleyTerry(res.minimizer, lambda)
 end
