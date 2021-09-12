@@ -4,7 +4,7 @@
 
 # Implement Elo as used by USCF
 
-immutable Elo
+struct Elo
 	r::Vector{Float64}
 end
 
@@ -35,7 +35,7 @@ function update!(m::Elo, D::Matrix)
 		error("Data must be in Ranking binary outcome format")
 	end
 	for ind in 1:nrows
-		i, j, o = int(D[ind, 1]), int(D[ind, 2]), D[ind, 3]
+		i, j, o = Int(D[ind, 1]), Int(D[ind, 2]), D[ind, 3]
 		p = predict(m, i, j)
 		m.r[i] += kfactor(m.r[i]) * (o - p)
 		m.r[j] += kfactor(m.r[j]) * ((1 - o) - (1 - p))
