@@ -1,5 +1,5 @@
 # Bipartite data
-immutable Rasch
+struct Rasch
 	a::Vector{Float64}
 	b::Vector{Float64}
 	lambda::Float64
@@ -13,7 +13,7 @@ function logposterior(m::Rasch, D::Matrix)
 
 	# Latent variable logit likelihood
 	for ind in 1:nrows
-		i, j, o = int(D[ind, 1]), int(D[ind, 2]), D[ind, 3]
+		i, j, o = Int(D[ind, 1]), Int(D[ind, 2]), D[ind, 3]
 		p = predict(m, i, j)
 		ll += log((1 - p) * (1 - o) + p * o)
 	end
@@ -38,10 +38,10 @@ function fit(::Type{Rasch},
 	f(x::Vector{Float64}) =
 	  logposterior(Rasch(x[1:n_a], x[(n_a + 1):(n_a + n_b)], lambda), D)
 
-	res = optimize(f, zeros(n_a + n_b), method = :l_bfgs)
+	res = optimize(f, zeros(n_a + n_b), LBFGS())
 
-	a = res.minimum[1:n_a]
-	b = res.minimum[(n_a + 1):(n_a + n_b)]
+	a = res.minimizer[1:n_a]
+	b = res.minimizer[(n_a + 1):(n_a + n_b)]
 
 	return Rasch(a, b, lambda)
 end
